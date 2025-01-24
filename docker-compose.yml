@@ -1,0 +1,31 @@
+version: '3.8'
+
+x-webapi-common: &webapi-common
+  build: ./webapi
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "3000:80"
+    depends_on:
+      - webapi1
+      - webapi2
+      - webapi3
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+  webapi1:
+    <<: *webapi-common
+    environment:
+      - SERVICE_NAME=webapi1
+
+  webapi2:
+    <<: *webapi-common
+    environment:
+      - SERVICE_NAME=webapi2
+
+  webapi3:
+    <<: *webapi-common
+    environment:
+      - SERVICE_NAME=webapi3
